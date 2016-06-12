@@ -1,4 +1,4 @@
-import simplejson as _json
+from simplejson import _json
 import icalendar
 
 
