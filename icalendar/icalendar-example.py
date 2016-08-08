@@ -68,7 +68,11 @@ event['organizer'] = organizer
 event.add('x-maintnote-provider', 'example.com' )
 event.add('x-maintnote-account', '137.035999173' )
 event.add('x-maintnote-maintenance-id', 'WorkOrder-31415' )
-event.add('x-maintnote-object-id', 'acme-widgets-as-a-service' )
+
+maint_object = vText('acme-widgets-as-a-service')
+maint_object.params['ALTREP'] = vText('https://example.org/maintenance?id=acme-widgets-as-a-service')
+
+event.add('x-maintnote-object-id',  maint_object)
 event.add('x-maintnote-impact', "NO-IMPACT");
 event.add('x-maintnote-status', "TENTATIVE");
 # test the regex
