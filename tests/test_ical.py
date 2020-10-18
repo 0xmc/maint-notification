@@ -4,12 +4,9 @@ import pytest
 from icalendar import Calendar
 from icalendar import vCalAddress, vText
 
-import xmaintnote
-from xmaintnote import exc
-
-
-def display(cal):
-    return cal.to_ical().replace('\r\n', '\n').strip()
+from xmaintnote.event import XMaintNoteEvent
+from xmaintnote.exc import PropertyError
+from xmaintnote.util import display
 
 
 def roundTime(dt=None, roundTo=60):
@@ -29,7 +26,6 @@ def roundTime(dt=None, roundTo=60):
 def start_two_hours_from_now():
     """Setup two datetime dates for a meeting set two hours from now"""
     dt_now = datetime(2016, 6, 12, 19, 23, 52)
-    # dt_now = datetime.utcnow()
     dt_now_rnd = roundTime(dt_now, roundTo=60 * 60)
     dt_mtg_start = dt_now_rnd + timedelta(0, 60 * 60)
     dt_mtg_end = dt_mtg_start + timedelta(0, 60 * 60)
@@ -39,14 +35,13 @@ def start_two_hours_from_now():
 def test_create_entry(pytestconfig):
     # cook up a datetime for our calendar entry
     (dt_now, dt_mtg_start, dt_mtg_end) = start_two_hours_from_now()
-    dt_cal_start = dt_now - timedelta(10)
 
     # example script to add X-MAINTNOTE to an ical
     cal = Calendar()
     cal.add('prodid', '-//Maint Note//https://github.com/maint-notification//')
     cal.add('version', '2.0')
 
-    event = xmaintnote.XMaintNoteEvent()
+    event = XMaintNoteEvent()
 
     event.add('summary', 'Maint Note Example')
     event.add('uid', '42')
@@ -68,10 +63,10 @@ def test_create_entry(pytestconfig):
     maint_object.params['ALTREP'] = vText('https://example.org/maintenance?id=acme-widgets-as-a-service')
 
     event.add('x-maintnote-object-id', maint_object)
-    event.add('x-maintnote-impact', "NO-IMPACT");
-    event.add('x-maintnote-status', "TENTATIVE");
+    event.add('x-maintnote-impact', 'NO-IMPACT')
+    event.add('x-maintnote-status', 'TENTATIVE')
     # test the regex
-    # event.add('x-maintnote-impact', "GARBAGE");
+    # event.add('x-maintnote-impact', "GARBAGE")
 
     # if 0:
     #     organizer = vCalAddress('MAILTO:noone@example.com')
@@ -99,34 +94,34 @@ def test_create_entry(pytestconfig):
 
 
 def test_multiple_objects():
-    event = xmaintnote.XMaintNoteEvent()
+    event = XMaintNoteEvent()
     event.add('x-maintnote-object-id', 'object1')
     event.add('x-maintnote-object-id', 'object2')
     assert len(event['x-maintnote-object-id']) == 2
 
 
 def test_multiple_impacts_raises():
-    event = xmaintnote.XMaintNoteEvent()
+    event = XMaintNoteEvent()
     event.add('x-maintnote-impact', 'NO-IMPACT')
-    with pytest.raises(exc.PropertyError):
+    with pytest.raises(PropertyError):
         event.add('x-maintnote-impact', 'OUTAGE')
 
 
 def test_maint_status():
-    event = xmaintnote.XMaintNoteEvent()
+    event = XMaintNoteEvent()
     event.add('x-maintnote-status', 'TENTATIVE')
     assert event['x-maintnote-status'] == 'TENTATIVE'
 
 
 def test_maint_status_dup_raises():
-    event = xmaintnote.XMaintNoteEvent()
+    event = XMaintNoteEvent()
     event.add('x-maintnote-status', 'TENTATIVE')
-    with pytest.raises(exc.PropertyError):
+    with pytest.raises(PropertyError):
         event.add('x-maintnote-status', 'CONFIRMED')
 
 
-def test_maint_status_bad_logs(caplog):
-    event = xmaintnote.XMaintNoteEvent()
+def test_maint_status_bad_logs():
+    event = XMaintNoteEvent()
     bad_status = 'TINNITUS'
-    event.add('x-maintnote-status', bad_status)
-    assert bad_status in caplog.text()
+    with pytest.raises(PropertyError):
+        event.add('x-maintnote-status', bad_status)

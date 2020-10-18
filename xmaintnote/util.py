@@ -4,8 +4,8 @@ import icalendar
 
 
 def encode_vDDDTypes(obj):
+    """Convert vDDDTypes - date/time types to strings."""
     if isinstance(obj, icalendar.prop.vDDDTypes):
-        # convert vDDDTypes - date/time types to strings
         return obj.to_ical()
     raise TypeError(repr(obj) + " is not JSON serializable")
 
@@ -27,7 +27,7 @@ def ical2json(cal):
 
 
 def display(cal):
-    return cal.to_ical().replace('\r\n', '\n').strip()
+    return cal.to_ical().decode().replace('\r\n', '\n').strip()
 
 
 def register_property(property_type):
