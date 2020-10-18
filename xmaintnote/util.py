@@ -12,7 +12,7 @@ def encode_vDDDTypes(obj):
 def ical2json(cal):
     data = {}
     data[cal.name] = dict(cal.items());
-    
+
     for component in cal.subcomponents:
         if not data[cal.name].has_key(component.name):
             data[cal.name][component.name] = []

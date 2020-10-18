@@ -6,13 +6,14 @@ from xmaintnote.util import register_property
 
 LOGGER = logging.getLogger(__name__)
 
+
 @register_property
 class vXMaintNoteImpact(vText):
     """ X-MAINTNOTE-IMPACT
     """
     property_name = 'x-maintnote-impact'
     # list of known impact types
-    impact_types = [ 
+    impact_types = [
         'NO-IMPACT',
         'REDUCED-REDUNDANCY',
         'DEGRADED',
