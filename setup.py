@@ -6,6 +6,5 @@ setup(
     packages=find_packages(),
     install_requires=[
         'icalendar>=3.0',
-        'simplejson>=2.1.0',
     ],
 )

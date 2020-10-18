@@ -18,7 +18,8 @@ def roundTime(dt=None, roundTo=60):
     roundTo : Closest number of seconds to round to, default 1 minute.
     Author: Thierry Husson 2012 - Use it as you want but don't blame me.
     """
-    if dt == None: dt = datetime.now()
+    if dt is None:
+        dt = datetime.now()
     seconds = (dt - dt.min).seconds
     # // is a floor division, not a comment on following line:
     rounding = (seconds + roundTo / 2) // roundTo * roundTo
@@ -32,7 +33,7 @@ def start_two_hours_from_now():
     dt_now_rnd = roundTime(dt_now, roundTo=60 * 60)
     dt_mtg_start = dt_now_rnd + timedelta(0, 60 * 60)
     dt_mtg_end = dt_mtg_start + timedelta(0, 60 * 60)
-    return (dt_now, dt_mtg_start, dt_mtg_end)
+    return dt_now, dt_mtg_start, dt_mtg_end
 
 
 def test_create_entry(pytestconfig):
@@ -72,24 +73,24 @@ def test_create_entry(pytestconfig):
     # test the regex
     # event.add('x-maintnote-impact', "GARBAGE");
 
-    if 0:
-        organizer = vCalAddress('MAILTO:noone@example.com')
-        organizer.params['cn'] = vText('Max Rasmussen')
-        organizer.params['role'] = vText('CHAIR')
-        event['organizer'] = organizer
-        event['location'] = vText('Odense, Denmark')
-        event['uid'] = '20050115T101010/27346262376@mxm.dk'
-        event.add('priority', 5)
-
-        attendee = vCalAddress('MAILTO:maxm@example.com')
-        attendee.params['cn'] = vText('Max Rasmussen')
-        attendee.params['ROLE'] = vText('REQ-PARTICIPANT')
-        event.add('attendee', attendee, encode=0)
-
-        attendee = vCalAddress('MAILTO:the-dude@example.com')
-        attendee.params['cn'] = vText('The Dude')
-        attendee.params['ROLE'] = vText('REQ-PARTICIPANT')
-        event.add('attendee', attendee, encode=0)
+    # if 0:
+    #     organizer = vCalAddress('MAILTO:noone@example.com')
+    #     organizer.params['cn'] = vText('Max Rasmussen')
+    #     organizer.params['role'] = vText('CHAIR')
+    #     event['organizer'] = organizer
+    #     event['location'] = vText('Odense, Denmark')
+    #     event['uid'] = '20050115T101010/27346262376@mxm.dk'
+    #     event.add('priority', 5)
+    #
+    #     attendee = vCalAddress('MAILTO:maxm@example.com')
+    #     attendee.params['cn'] = vText('Max Rasmussen')
+    #     attendee.params['ROLE'] = vText('REQ-PARTICIPANT')
+    #     event.add('attendee', attendee, encode=0)
+    #
+    #     attendee = vCalAddress('MAILTO:the-dude@example.com')
+    #     attendee.params['cn'] = vText('The Dude')
+    #     attendee.params['ROLE'] = vText('REQ-PARTICIPANT')
+    #     event.add('attendee', attendee, encode=0)
 
     cal.add_component(event)
 
