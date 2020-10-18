@@ -27,7 +27,7 @@ def roundTime(dt=None, roundTo=60):
 
 def start_two_hours_from_now():
     """Setup two datetime dates for a meeting set two hours from now"""
-    dt_now = datetime(2016, 06, 12, 19, 23, 52)
+    dt_now = datetime(2016, 6, 12, 19, 23, 52)
     #dt_now = datetime.utcnow()
     dt_now_rnd = roundTime(dt_now, roundTo=60*60)
     dt_mtg_start = dt_now_rnd + timedelta(0, 60*60)
