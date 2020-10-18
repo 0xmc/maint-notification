@@ -4,13 +4,12 @@ from xmaintnote import exc
 
 
 class XMaintNoteEvent(Event):
-
-    # XXX-kbaker 
+    # XXX-kbaker
     # controls ordering - probably not necessary
     # and can probably get rid of this class entirely 
     # besides canonical_order the library doesn't seem
     # to use any of this anyways.
-    canonical_order = Event.canonical_order + ( 
+    canonical_order = Event.canonical_order + (
         'X-MAINTNOTE-PROVIDER',
         'X-MAINTNOTE-ACCOUNT',
         'X-MAINTNOTE-MAINTENANCE-ID',
